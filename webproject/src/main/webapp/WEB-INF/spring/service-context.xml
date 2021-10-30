@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+dispatcher-servlet 파일명 뜻
+web.xml에서 매핑네임이 dispatcher여서 dispatcher + - + servlet
+ --> 
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"	
+	xmlns:context="http://www.springframework.org/schema/context"		
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc	
+        https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/context	
+        https://www.springframework.org/schema/context/spring-context.xsd">	<!-- 스키마파일, 윗줄은 그 이름 -->
+
+	<context:component-scan base-package="com.newlecture.web.service" />	<!-- 지정한 패키지 안의 모든 클래스 뒤짐 -->
+	<!-- <context:annotation-config /> context:component-scan설정시 필요 없어짐-->
+
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<!-- name값은 setter이름과 맞춰야 -->
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+		<property name="username" value="MY"/>
+		<property name="password" value="1234"/>
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+	</bean>
+<!-- 	
+ 	<bean id="noticeService" class="com.newlecture.web.service.jdbc.JDBCNoticeService">
+   		<property name="dataSource" ref="dataSource" />	ref에 및의 빈을 참조시켜서 name인 setDataSource에 의존성 주입    
+	</bean>
+		 -->
+</beans>
+  

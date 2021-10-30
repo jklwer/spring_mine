@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+dispatcher-servlet 파일명 뜻
+web.xml에서 매핑네임이 dispatcher여서 dispatcher + - + servlet
+ --> 
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"	
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc	
+        https://www.springframework.org/schema/mvc/spring-mvc.xsd">	<!-- 스키마파일, 윗줄은 그 이름 -->
+
+    <bean id="/index" class="com.newlecture.web.controller.IndexController" />  <!-- id= 이 "url"요청이 오면 class="패키지 + 클래스명"을 객체화해서 컨테이너에 담음 -->
+        <!-- collaborators and configuration for this bean go here -->
+	<bean id="/notice/list" class="com.newlecture.web.controller.notice.ListController">	
+		<property name="noticeService" ref="noticeService" />	<!-- noticeService는 ListController가 가진 setter여야함 -->
+	</bean>
+	<bean id="/notice/detail" class="com.newlecture.web.controller.notice.DetailController" />
+
+<!-- view resolver -->
+	<!-- tiles -->
+	<bean
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.tiles3.TilesView" />
+		<property name="order" value="1" />
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions" value="/WEB-INF/tiles.xml" />
+	</bean>
+
+
+	<!-- prefix,suffix -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    	<property name="prefix" value="/WEB-INF/view/"/>
+    	<property name="suffix" value=".jsp" />
+    	<property name="order" value="2" />
+    	
+    </bean>
+    
+    <mvc:resources location="/static/" mapping="/**"></mvc:resources>	<!-- 정적 요청들은 static이 루트가 되어 찾음 -->
+    
+    <bean id="noticeService" class="com.newlecture.web.service.jdbc.JDBCNoticeService">
+    	<property name="dataSource" ref="dataSource" />	<!-- ref에 및의 빈을 참조시켜서 name인 setDataSource에 의존성 주입 -->
+    </bean>
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<!-- name값은 setter이름과 맞춰야 -->
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+		<property name="username" value="MY"/>
+		<property name="password" value="1234"/>
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+	</bean>
+		
+</beans>
+  

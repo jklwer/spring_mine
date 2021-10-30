@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+dispatcher-servlet 파일명 뜻
+web.xml에서 매핑네임이 dispatcher여서 dispatcher + - + servlet
+ --> 
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"	
+	xmlns:context="http://www.springframework.org/schema/context"		
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc	
+        https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/context	
+        https://www.springframework.org/schema/context/spring-context.xsd">	<!-- 스키마파일, 윗줄은 그 이름 -->
+
+	<context:component-scan base-package="com.newlecture.web.controller" />	<!-- 지정한 패키지 안의 모든 클래스 뒤짐 -->
+<!-- 	<context:annotation-config /> -->
+
+<!-- 	
+	<bean id="/index" class="com.newlecture.web.controller.IndexController" />  id= 이 "url"요청이 오면 class="패키지 + 클래스명"을 객체화해서 컨테이너에 담음
+	<bean id="/notice/list" class="com.newlecture.web.controller.notice.ListController">	
+		<property name="noticeService" ref="noticeService" />	noticeService는 ListController가 가진 setter여야함
+	</bean>
+	<bean id="/notice/detail" class="com.newlecture.web.controller.notice.DetailController" />
+ -->
+ 
+<!-- view resolver -->
+	<!-- tiles -->
+	<bean
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.tiles3.TilesView" />
+		<property name="order" value="1" />
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions" value="/WEB-INF/tiles.xml" />
+	</bean>
+
+
+	<!-- prefix,suffix -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    	<property name="prefix" value="/WEB-INF/view/"/>
+    	<property name="suffix" value=".jsp" />
+    	<property name="order" value="2" />
+    	
+    </bean>
+    
+    <mvc:resources location="/static/" mapping="/**"></mvc:resources>	<!-- 정적 요청들은 static이 루트가 되어 찾음 -->
+   	<mvc:annotation-driven >	<!-- controller 어노테이션에 매핑하는 용도 -->
+   		<mvc:message-converters>	<!-- @RespnseBody로 String 처리할때 한글처리  -->
+   			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+   				<property name="supportedMediaTypes" >
+   					<list>
+   						<value>text/html;charset=UTF-8</value>
+   					</list>
+   				</property>
+   			</bean>
+   		</mvc:message-converters>
+   </mvc:annotation-driven>
+		
+</beans>
+  
