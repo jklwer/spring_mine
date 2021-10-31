@@ -48,6 +48,16 @@ web.xml에서 매핑네임이 dispatcher여서 dispatcher + - + servlet
     	
     </bean>
     
+    <!-- 파일업로드 -->
+    <bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- setting maximum upload size 300MB(1024-1024*300) -->
+		<property name="maxUploadSize" value="314572800"></property>	<!-- setMaxUploadSize : 여러개 파일의 최대 전체크기
+																	 		 setMaxUploadSizePerFile : 한 파일당 최대 크기 -->
+	</bean>
+    
+    
+    
     <mvc:resources location="/static/" mapping="/**"></mvc:resources>	<!-- 정적 요청들은 static이 루트가 되어 찾음 -->
    	<mvc:annotation-driven >	<!-- controller 어노테이션에 매핑하는 용도 -->
    		<mvc:message-converters>	<!-- @RespnseBody로 String 처리할때 한글처리  -->
